@@ -26,8 +26,6 @@ Route::group(['prefix' => env('API_VERSION'), 'namespace' => 'API'], function ()
              */
             Route::apiResources([
                 'users' => 'UserController',
-                // 'roles' => 'RoleController',
-                // 'permissions' => 'PermissionController',
             ], [
                 'except' => ['create', 'edit',]
             ]);
@@ -37,6 +35,8 @@ Route::group(['prefix' => env('API_VERSION'), 'namespace' => 'API'], function ()
              */
             Route::apiResources([
                 'activities' => 'ActivityController',
+                'roles' => 'RoleController',
+                'permissions' => 'PermissionController',
             ], [
                 'except' => ['create', 'store', 'edit', 'update', 'destroy']
             ]);

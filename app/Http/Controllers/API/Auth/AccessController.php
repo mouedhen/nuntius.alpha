@@ -28,7 +28,12 @@ class AccessController extends Controller
             'password' => $request->get('password')
         ])) {
             $user = Auth::user();
-            $user['token'] = $user->createToken('goulelhom-app', $user->roles->toArray())->accessToken;
+            $roles = $user->roles->toArray();
+            $scope = [];
+            foreach ($roles as $role) {
+                array_push($scope, $role['name']);
+            }
+            $user['token'] = $user->createToken('goulelhom-app', $scope)->accessToken;
             return $this->jsonResponse(['data' => $user], JsonResponse::HTTP_OK);
         }
         return $this->jsonResponse('Unauthorized', JsonResponse::HTTP_UNAUTHORIZED);

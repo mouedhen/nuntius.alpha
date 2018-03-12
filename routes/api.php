@@ -33,13 +33,17 @@ Route::group(['prefix' => env('API_VERSION'), 'namespace' => 'API'], function ()
             /*
              * Read only APIs
              */
-            Route::apiResources([
-                'activities' => 'ActivityController',
-                'roles' => 'RoleController',
-                'permissions' => 'PermissionController',
-            ], [
-                'except' => ['create', 'store', 'edit', 'update', 'destroy']
-            ]);
+            Route::group([
+                // 'middleware' => 'scopes:admin'
+            ], function () {
+                Route::apiResources([
+                    'activities' => 'ActivityController',
+                    'roles' => 'RoleController',
+                    'permissions' => 'PermissionController',
+                ], [
+                    'except' => ['create', 'store', 'edit', 'update', 'destroy']
+                ]);
+            });
 
         });
     });

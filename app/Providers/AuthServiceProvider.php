@@ -25,11 +25,12 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
         Passport::routes();
         Passport::tokensCan([
-            'public-access' => 'Only public APIs endpoints',
-            'admin-access' => 'Access to all APIs endpoints',
+            'admin' => 'Access to all APIs endpoints',
+            'manager' => 'manage company resources',
+            'supervisor' => 'launch assigned missions',
+            'employee' => 'launch tasks in assigned missions',
         ]);
     }
 }

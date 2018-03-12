@@ -20,6 +20,7 @@ trait RestExceptionHandlerTrait
     use RestModelNotFoundExceptionTrait;
     use RestNotFoundExceptionTrait;
     use RestValidationExceptionTrait;
+    use RestMissingScopeExceptionTrait;
 
     /**
      * @param Request $request
@@ -35,6 +36,8 @@ trait RestExceptionHandlerTrait
                 return $this->modelNotFoundException();
             case $this->isNotFoundException($exception):
                 return $this->notFoundException();
+            case $this->isMissingScopeException($exception):
+                return $this->missingScopeException();
             case $this->isValidationException($exception):
                 return $this->validationException($data = $exception->errors());
             default:

@@ -14,10 +14,17 @@ class UsersResource extends JsonResource
      */
     public function toArray($request)
     {
+        $role = '';
+        if($this->hasRole('employee')) $role = 'employee';
+        if($this->hasRole('supervisor')) $role = 'supervisor';
+        if($this->hasRole('manager')) $role = 'manager';
+        if($this->hasRole('admin')) $role = 'admin';
         return [
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
+            'roles' => $this->roles,
+            'role' => $role,
             'url' => url("/users/{$this->id}")
         ];
     }

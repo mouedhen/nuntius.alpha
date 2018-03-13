@@ -28,7 +28,8 @@ class UserStoreRequest extends FormRequest
             'name' => 'required|min:4|max:255',
             'email' => 'required|min:4|max:255|unique:users,email|email',
             'password' => 'required|min:4|max:255|confirmed',
-            'password_confirmation' => 'required'
+            'password_confirmation' => 'required',
+            'role' => 'required',
         ];
     }
 }

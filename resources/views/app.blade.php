@@ -9,7 +9,8 @@
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
-    <link href="{{ mix('css/app.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet" type="text/css" media="screen">
+    <link href="{{ mix('css/print.css') }}" rel="stylesheet" type="text/css" media="print">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
 </head>

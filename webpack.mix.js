@@ -15,11 +15,23 @@ var LiveReloadPlugin = require('webpack-livereload-plugin');
 mix
     .extract([
         'axios',
+        'babel-polyfill',
+        'chart.js',
         'element-ui',
+        'inputmask',
+        'moment',
+        'moment-duration-format',
+        'moment-timezone',
         'vue',
+        'vue-chartjs',
+        'vue-data-tables',
+        'vue-flatpickr-component',
+        'vue-router',
+        'vuex',
     ])
     .js('resources/assets/js/app.js', 'public/js')
     .sass('resources/assets/sass/app.scss', 'public/css')
+    .sass('resources/assets/sass/print.scss', 'public/css')
     .webpackConfig({
         plugins: [
             new LiveReloadPlugin()

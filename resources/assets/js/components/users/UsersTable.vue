@@ -19,15 +19,13 @@
 <script>
     export default {
         props: ['users'],
-        mounted() {
-            console.log(this.users)
-        },
         data() {
             return {
                 titles: [
                     {prop: 'id', label: '#', width:'100'},
                     {prop: 'name', label: 'Nom & Prénom'},
                     {prop: 'email', label: 'Adresse e-mail'},
+                    {prop: 'role', label: 'Rôle'},
                 ],
                 checkboxFilterDef: {colProps: {span: 0}},
                 actionsDef: {colProps: {span: 0}},
@@ -39,9 +37,9 @@
                         align: 'center'
                     },
                     def: [{
-                        name: 'Détails',
+                        name: 'Modifier',
                         handler: row => {
-                            this.$router.push({name: 'dashboard:users:details', params: {id: row.id}})
+                            this.$router.push({name: 'users:update', params: {id: row.id}})
                         }
                     }, {
                         name: 'Supprimer',

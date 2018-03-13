@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\Auth;
 use App\Http\Requests\Auth\UserStoreRequest;
 use App\Http\Resources\Auth\UserResource;
 use App\Http\Resources\Collections\Auth\UsersResource;
+use App\Models\Auth\Role;
 use App\Models\Auth\User;
 use App\Traits\API\Helpers\RestTrait;
 use Illuminate\Http\JsonResponse;
@@ -36,14 +37,17 @@ class UserController extends Controller
      */
     public function store(UserStoreRequest $request)
     {
-        $data = new UserResource(
-            User::create([
-                    'name' => $request->get('name'),
-                    'email' => $request->get('email'),
-                    'password' => bcrypt($request->get('password'))
-                ]
-            )
+        $user = User::create([
+                'name' => $request->get('name'),
+                'email' => $request->get('email'),
+                'password' => bcrypt($request->get('password'))
+            ]
         );
+
+        $role = Role::find($request->get('role'));
+        $user->attachRole($role);
+
+        $data = new UserResource($user);
         return $this->jsonResponse(['data' => $data], JsonResponse::HTTP_CREATED);
     }
 
@@ -81,6 +85,12 @@ class UserController extends Controller
             'name' => $request->get('name'),
             'email' => $request->get('email'),
         ]);
+
+        if($request->get('role')) {
+            $user->roles()->detach();
+            $role = Role::find($request->get('role'));
+            $user->attachRole($role);
+        }
 
         if ($request->get('password')) {
             $user->password = bcrypt($request->get('password'));

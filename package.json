@@ -12,12 +12,16 @@
     "dependencies": {
         "axios": "^0.18",
         "babel-polyfill": "^6.26.0",
+        "chart.js": "^2.7.2",
         "element-ui": "^2.2.1",
+        "inputmask": "^3.3.11",
         "moment": "^2.21.0",
         "moment-duration-format": "^2.2.2",
         "moment-timezone": "^0.5.14",
         "vue": "^2.5.15",
+        "vue-chartjs": "^3.2.1",
         "vue-data-tables": "^3.1.4",
+        "vue-flatpickr-component": "^7.0.0",
         "vue-router": "^3.0.1",
         "vuex": "^3.0.1"
     },

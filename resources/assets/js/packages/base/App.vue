@@ -1,16 +1,16 @@
 <template>
     <el-container>
-        <el-aside width="250px" v-if="!isFullMain">
+        <el-aside width="250px" v-if="!isFullMain" class="noprint">
             <admin-sidebar/>
         </el-aside>
         <el-container class="is-vertical">
-            <el-header v-if="!isFullMain" style="padding: 0">
+            <el-header v-if="!isFullMain" style="padding: 0" class="noprint">
                 <el-menu
                         background-color="#27ae60"
                         text-color="#f2f2f2"
                         active-text-color="#f2f2f2"
                         class="navbar" mode="horizontal">
-                    <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">Se déconnecter</a>
+                    <el-menu-item index="4" @click="logout">Se déconnecter</a>
                     </el-menu-item>
                 </el-menu>
             </el-header>
@@ -40,6 +40,14 @@
             }),
             isFullMain() {
                 return (!this.isLogged) || (this.$route.name === 'index')
+            }
+        },
+        methods: {
+            logout() {
+                this.$store.dispatch('logout')
+                    .then(() => {
+                        this.$router.push('/')
+                    })
             }
         },
         mounted() {

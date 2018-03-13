@@ -4,6 +4,7 @@ namespace App\Models\Location;
 
 use Illuminate\Database\Eloquent\Model;
 use PragmaRX\Countries\Package\Countries;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @property int $id
@@ -16,6 +17,8 @@ use PragmaRX\Countries\Package\Countries;
  */
 class City extends Model
 {
+    use LogsActivity;
+
     protected $table = 'cities';
     protected $fillable = ['name', 'country_cca2'];
 

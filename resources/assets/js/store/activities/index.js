@@ -1,8 +1,8 @@
 import axios from 'axios'
 import {apiURL} from "../../config";
-import {FETCH_USERS} from "../users/mutation-types";
 
-const FETCH_ACTIVITES = 'activities/FETCH_ACTIVITES';
+const FETCH_ACTIVITIES = 'activities/FETCH_ACTIVITIES';
+const REINIT_ACTIVITIES = 'activities/REINIT_ACTIVITIES';
 
 export default {
 
@@ -11,14 +11,22 @@ export default {
     },
 
     mutations: {
-        [FETCH_ACTIVITES](state, activities) {
+        [FETCH_ACTIVITIES](state, activities) {
             state.activities = state.activities.concat(activities)
         },
+
+        [REINIT_ACTIVITIES](state) {
+            state.activities = []
+        }
     },
 
     actions: {
         fetchActivities({commit}) {
             this.dispatch('loadActivities', {url: apiURL + 'activities'})
+        },
+
+        reinitActivities({commit}) {
+            commit(REINIT_ACTIVITIES)
         },
 
         async loadActivities({commit}, {url}) {
@@ -28,7 +36,7 @@ export default {
                     url: url,
                 })
                 .then(response => {
-                    commit(FETCH_ACTIVITES, response.data.data);
+                    commit(FETCH_ACTIVITIES, response.data.data);
                     if (response.data.links.next !== null) {
                         this.dispatch('loadActivities', {url: response.data.links.next})
                     }

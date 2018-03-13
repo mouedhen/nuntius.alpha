@@ -26,10 +26,10 @@ class ActivityController extends Controller
      * Display the specified resource.
      *
      * @param  int $id
-     * @return ActivityResource
+     * @return ActivitiesResource
      */
     public function show($id)
     {
-        return new ActivityResource(Activity::findOrFail($id));
+        return new ActivitiesResource(Activity::findOrFail($id));
     }
 }

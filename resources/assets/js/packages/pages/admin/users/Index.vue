@@ -42,6 +42,10 @@
         },
         mounted() {
             this.$store.dispatch('fetchActivities')
+        },
+        beforeRouteLeave(to, from, next) {
+            this.$store.dispatch('reinitActivities');
+            next()
         }
     }
 </script>

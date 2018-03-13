@@ -20,7 +20,7 @@
             <el-menu-item-group title="Utilisateurs">
                 <el-menu-item index="1-0" :route="{name: 'users:index'}">Tableau de bord</el-menu-item>
                 <el-menu-item index="1-1">Ajouter des utilisateurs</el-menu-item>
-                <el-menu-item index="1-2">Liste des utilisateurs</el-menu-item>
+                <el-menu-item index="1-2" :route="{name: 'users:list'}">Liste des utilisateurs</el-menu-item>
             </el-menu-item-group>
         </el-submenu>
     </el-menu>

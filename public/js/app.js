@@ -14686,8 +14686,9 @@ var getUsers = function getUsers(state) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(65);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config__ = __webpack_require__(140);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__users_mutation_types__ = __webpack_require__(141);
 
+
+var _mutations;
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
@@ -14696,8 +14697,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-
-var FETCH_ACTIVITES = 'activities/FETCH_ACTIVITES';
+var FETCH_ACTIVITIES = 'activities/FETCH_ACTIVITIES';
+var REINIT_ACTIVITIES = 'activities/REINIT_ACTIVITIES';
 
 /* harmony default export */ __webpack_exports__["a"] = ({
 
@@ -14705,9 +14706,11 @@ var FETCH_ACTIVITES = 'activities/FETCH_ACTIVITES';
         activities: []
     },
 
-    mutations: _defineProperty({}, FETCH_ACTIVITES, function (state, activities) {
+    mutations: (_mutations = {}, _defineProperty(_mutations, FETCH_ACTIVITIES, function (state, activities) {
         state.activities = state.activities.concat(activities);
-    }),
+    }), _defineProperty(_mutations, REINIT_ACTIVITIES, function (state) {
+        state.activities = [];
+    }), _mutations),
 
     actions: {
         fetchActivities: function fetchActivities(_ref) {
@@ -14715,21 +14718,26 @@ var FETCH_ACTIVITES = 'activities/FETCH_ACTIVITES';
 
             this.dispatch('loadActivities', { url: __WEBPACK_IMPORTED_MODULE_2__config__["a" /* apiURL */] + 'activities' });
         },
+        reinitActivities: function reinitActivities(_ref2) {
+            var commit = _ref2.commit;
+
+            commit(REINIT_ACTIVITIES);
+        },
         loadActivities: function () {
-            var _ref4 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(_ref2, _ref3) {
+            var _ref5 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(_ref3, _ref4) {
                 var _this = this;
 
-                var commit = _ref2.commit;
-                var url = _ref3.url;
+                var commit = _ref3.commit;
+                var url = _ref4.url;
                 return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
-                                return _context.abrupt("return", __WEBPACK_IMPORTED_MODULE_1_axios___default()({
+                                return _context.abrupt('return', __WEBPACK_IMPORTED_MODULE_1_axios___default()({
                                     method: 'GET',
                                     url: url
                                 }).then(function (response) {
-                                    commit(FETCH_ACTIVITES, response.data.data);
+                                    commit(FETCH_ACTIVITIES, response.data.data);
                                     if (response.data.links.next !== null) {
                                         _this.dispatch('loadActivities', { url: response.data.links.next });
                                     }
@@ -14739,7 +14747,7 @@ var FETCH_ACTIVITES = 'activities/FETCH_ACTIVITES';
                                 }));
 
                             case 1:
-                            case "end":
+                            case 'end':
                                 return _context.stop();
                         }
                     }
@@ -14747,7 +14755,7 @@ var FETCH_ACTIVITES = 'activities/FETCH_ACTIVITES';
             }));
 
             function loadActivities(_x, _x2) {
-                return _ref4.apply(this, arguments);
+                return _ref5.apply(this, arguments);
             }
 
             return loadActivities;
@@ -14773,6 +14781,9 @@ var FETCH_ACTIVITES = 'activities/FETCH_ACTIVITES';
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__packages_pages_common_Dashboard___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__packages_pages_common_Dashboard__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__packages_pages_admin_users_Index__ = __webpack_require__(538);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__packages_pages_admin_users_Index___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__packages_pages_admin_users_Index__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__packages_pages_admin_users_UsersList__ = __webpack_require__(682);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__packages_pages_admin_users_UsersList___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__packages_pages_admin_users_UsersList__);
+
 
 
 
@@ -14794,6 +14805,10 @@ var FETCH_ACTIVITES = 'activities/FETCH_ACTIVITES';
         path: '/dashboard/users',
         name: 'users:index',
         component: __WEBPACK_IMPORTED_MODULE_3__packages_pages_admin_users_Index___default.a
+    }, {
+        path: '/dashboard/users/list',
+        name: 'users:list',
+        component: __WEBPACK_IMPORTED_MODULE_4__packages_pages_admin_users_UsersList___default.a
     }]
 }));
 
@@ -15751,6 +15766,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     })),
     mounted: function mounted() {
         this.$store.dispatch('fetchActivities');
+    },
+    beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+        this.$store.dispatch('reinitActivities');
+        next();
     }
 });
 
@@ -16137,9 +16156,11 @@ var render = function() {
                 _vm._v("Ajouter des utilisateurs")
               ]),
               _vm._v(" "),
-              _c("el-menu-item", { attrs: { index: "1-2" } }, [
-                _vm._v("Liste des utilisateurs")
-              ])
+              _c(
+                "el-menu-item",
+                { attrs: { index: "1-2", route: { name: "users:list" } } },
+                [_vm._v("Liste des utilisateurs")]
+              )
             ],
             1
           )
@@ -32743,6 +32764,327 @@ webpackContext.keys = function webpackContextKeys() {
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
 webpackContext.id = 681;
+
+/***/ }),
+/* 682 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(60)
+/* script */
+var __vue_script__ = __webpack_require__(683)
+/* template */
+var __vue_template__ = __webpack_require__(687)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/packages/pages/admin/users/UsersList.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-1630e4a4", Component.options)
+  } else {
+    hotAPI.reload("data-v-1630e4a4", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 683 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_users_UsersTable__ = __webpack_require__(684);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_users_UsersTable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_users_UsersTable__);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: {
+        UsersTable: __WEBPACK_IMPORTED_MODULE_1__components_users_UsersTable___default.a
+    },
+    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapGetters */])({
+        users: 'getUsers'
+    })),
+    mounted: function mounted() {
+        var _this = this;
+
+        this.$store.dispatch('fetchUsers').catch(function (error) {
+            _this.$notify.error({
+                title: 'Erreur',
+                message: 'Erreur lors de lecture des données...'
+            });
+        });
+    },
+    beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+        var _this2 = this;
+
+        this.$store.dispatch('reinitUsers').catch(function (error) {
+            _this2.$notify.error({
+                title: 'Erreur',
+                message: 'Une erreur inattendue est survenue, merci de contacter votre administrateur...'
+            });
+        });
+        next();
+    }
+});
+
+/***/ }),
+/* 684 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(60)
+/* script */
+var __vue_script__ = __webpack_require__(685)
+/* template */
+var __vue_template__ = __webpack_require__(686)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/users/UsersTable.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-42f4a4c4", Component.options)
+  } else {
+    hotAPI.reload("data-v-42f4a4c4", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 685 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['users'],
+    mounted: function mounted() {
+        console.log(this.users);
+    },
+    data: function data() {
+        var _this = this;
+
+        return {
+            titles: [{ prop: 'id', label: '#', width: '100' }, { prop: 'name', label: 'Nom & Prénom' }, { prop: 'email', label: 'Adresse e-mail' }],
+            checkboxFilterDef: { colProps: { span: 0 } },
+            actionsDef: { colProps: { span: 0 } },
+            searchDef: { colProps: { span: 24 } },
+            actionColDef: {
+                label: 'Actions',
+                width: '250',
+                tableColProps: {
+                    align: 'center'
+                },
+                def: [{
+                    name: 'Détails',
+                    handler: function handler(row) {
+                        _this.$router.push({ name: 'dashboard:users:details', params: { id: row.id } });
+                    }
+                }, {
+                    name: 'Supprimer',
+                    handler: function handler(row) {
+                        _this.$confirm('Voulez-vous vraiment supprimer l\'utilisateur ' + row.name + '. Continuer ?', 'Attention', {
+                            confirmButtonText: 'Oui',
+                            cancelButtonText: 'Annuler',
+                            type: 'warning'
+                        }).then(function () {
+                            _this.$store.dispatch('deleteUser', { userID: row.id }).then(function () {
+                                _this.$message({
+                                    type: 'success',
+                                    message: 'Utilisateur supprimé avec succèss'
+                                });
+                            }).catch(function (e) {
+                                _this.$message({
+                                    type: 'warning',
+                                    message: 'Une erreur inattendue est survenue. Merci de réessayer...'
+                                });
+                            });
+                        }).catch(function () {
+                            _this.$message({
+                                type: 'info',
+                                message: 'Suppression annulée...'
+                            });
+                        });
+                    }
+                }]
+            }
+        };
+    }
+});
+
+/***/ }),
+/* 686 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "data-tables",
+    {
+      attrs: {
+        data: _vm.users,
+        "search-def": _vm.searchDef,
+        "checkbox-filter-def": _vm.checkboxFilterDef,
+        "actions-def": _vm.actionsDef,
+        "action-col-def": _vm.actionColDef
+      }
+    },
+    _vm._l(_vm.titles, function(title) {
+      return _c("el-table-column", {
+        key: title.prop,
+        attrs: {
+          prop: title.prop,
+          label: title.label,
+          width: title.width,
+          sortable: "custom"
+        }
+      })
+    })
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-42f4a4c4", module.exports)
+  }
+}
+
+/***/ }),
+/* 687 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "main" },
+    [
+      _c(
+        "el-breadcrumb",
+        { attrs: { separator: "/" } },
+        [
+          _c(
+            "el-breadcrumb-item",
+            { attrs: { to: { name: "dashboard:users:index" } } },
+            [_vm._v("Gestion des utilisateurs")]
+          ),
+          _vm._v(" "),
+          _c("el-breadcrumb-item", [_vm._v("Liste des utilisateurs")])
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "margin-top" },
+        [_c("users-table", { attrs: { users: _vm.users } })],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-1630e4a4", module.exports)
+  }
+}
 
 /***/ })
 ],[208]);

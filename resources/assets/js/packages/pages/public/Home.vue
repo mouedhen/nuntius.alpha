@@ -40,11 +40,9 @@
 </template>
 
 <script>
-    import * as axios from "axios";
-    import {apiURL} from '../../../config'
+    // TODO redirect logged users to dashboard
 
     import {mapGetters} from 'vuex'
-
     import Logo from '../../../components/base/Logo'
 
     export default {
@@ -67,6 +65,10 @@
         methods: {
             async login() {
                 this.$store.dispatch('login', {user: this.user})
+                    .then(() => {
+                        this.$store.dispatch('checkLogged');
+                        this.$router.push({name: 'dashboard'})
+                    })
                     .catch(error => {
                         this.$message.error('Merci de vérifier vos paramètres de connexion.');
                         console.log(error)
@@ -77,7 +79,9 @@
             }
         },
         mounted() {
-            this.$store.dispatch('checkLogged');
+            if (this.isLogged) {
+                this.$router.push('/dashboard');
+            }
         }
     }
 </script>
@@ -91,6 +95,10 @@
             width: 100%;
         }
     }
+
+    /**
+
+     */
 
     .container {
         min-height: 100vh;

@@ -18,6 +18,7 @@ class ActivitiesResource extends JsonResource
             'id' => $this->id,
             'description' => $this->description,
             'subject' => $this->subject,
+            'subject_type' => $this->subject_type,
             'causer' => $this->causer,
         ];
     }

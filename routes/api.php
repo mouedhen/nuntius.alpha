@@ -15,8 +15,7 @@ Route::group(['prefix' => env('API_VERSION'), 'namespace' => 'API'], function ()
         Route::post('login', 'AccessController@login')->name('auth.login');
 
         Route::group([
-            // @IMPORTANT: TODO activate authentication
-            // 'middleware' => 'auth:api',
+            'middleware' => 'auth:api',
         ], function () {
             Route::get('profile', 'AccessController@profile')->name('auth.profile');
             Route::post('logout', 'AccessController@logout')->name('auth.logout');
@@ -34,7 +33,7 @@ Route::group(['prefix' => env('API_VERSION'), 'namespace' => 'API'], function ()
              * Read only APIs
              */
             Route::group([
-                // 'middleware' => 'scopes:admin'
+                'middleware' => 'scopes:admin'
             ], function () {
                 Route::apiResources([
                     'activities' => 'ActivityController',
@@ -53,7 +52,7 @@ Route::group(['prefix' => env('API_VERSION'), 'namespace' => 'API'], function ()
     ], function () {
 
         Route::group([
-            // 'middleware' => 'auth:api'
+            'middleware' => 'auth:api'
         ], function () {
 
             Route::apiResources([

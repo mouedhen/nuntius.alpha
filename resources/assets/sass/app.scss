@@ -18,3 +18,26 @@ html {
   box-sizing: border-box;
   margin: 0;
 }
+
+.main {
+  background: #f2f2f2;
+  height: calc(100vh - 60px);
+  padding: 1rem;
+  overflow-y: scroll;
+}
+
+.navbar {
+  border: none;
+  .el-menu-item {
+    float: right;
+  }
+}
+
+.margin-top {
+  margin-top: 1rem
+}
+
+.sidebar {
+  // box-shadow: 3px 3px 6px rgba(0,0,0,0.16), 3px 3px 6px rgba(0,0,0,0.23);
+}
+

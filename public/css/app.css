@@ -64208,3 +64208,22 @@ html {
   margin: 0;
 }
 
+.main {
+  background: #f2f2f2;
+  height: calc(100vh - 60px);
+  padding: 1rem;
+  overflow-y: scroll;
+}
+
+.navbar {
+  border: none;
+}
+
+.navbar .el-menu-item {
+  float: right;
+}
+
+.margin-top {
+  margin-top: 1rem;
+}
+

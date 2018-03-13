@@ -18,7 +18,7 @@ class ActivityController extends Controller
     public function index()
     {
         return ActivitiesResource::collection(
-            Activity::paginate()
+            Activity::orderBy('updated_at', 'desc')->paginate()
         );
     }
 
